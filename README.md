@@ -1,10 +1,19 @@
 # aap_services.yml
 ---
-- name: check status of services
-  hosts: 10.3.0.15
+- name: checking service status
+  hosts: localhost
   tasks:
-    - name: check the services
-      command: systemctl status "{{ item }}"
-      with_items:
-        - redis-server
-        - postgresql
+  - name: checking service status
+    command: systemctl status "{{ item }}"
+    with_items:
+    - automation-controller
+    - nginx
+    - supervisord
+    - postgresql
+    - redis
+    register: result
+    ignore_errors: yes
+  - name: showing report
+    debug:
+     var: result
+
